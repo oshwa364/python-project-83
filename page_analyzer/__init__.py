@@ -1,3 +1,5 @@
-from flask import Flask
+from page_analyzer.app import app
 
-app = Flask(__name__)
+__all__ = (
+    'app'
+)
