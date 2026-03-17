@@ -1,6 +1,6 @@
 import os
+import random
 
-import psycopg2
 import validators
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -46,8 +46,8 @@ def add_url():
 
 @app.route('/urls/<id>')
 def url_details(id):
-    url_data = repo.get_details(id)
-    return render_template('url.html', url=url_data)
+    url_data, checks = repo.get_details(id)
+    return render_template('url.html', url=url_data, checks=checks)
 
 
 @app.route('/urls')
@@ -56,9 +56,15 @@ def show_urls():
     return render_template('urls.html', urls=urls_data)
 
 
-@app.route('/urls')
-def create_check():
-    pass
+@app.post('/urls/<id>/checks')
+def check_url(id):
+    url_data = repo.get_details(id)
+    if random.randint(1, 10) % 2 == 0:
+        repo.insert_url_check(id, url_data)
+        flash('Страница успешно проверена', 'alert-success')
+    else:
+        flash('Произошла ошибка при проверке', 'alert-danger')
+    return redirect(url_for('url_details', id=id))
 
 
 @app.route('/clean-the-table')
