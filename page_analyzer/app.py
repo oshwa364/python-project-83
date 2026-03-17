@@ -44,7 +44,7 @@ def add_url():
     return redirect_url
 
 
-@app.route('/urls/<id>')
+@app.route('/urls/<int:id>')
 def url_details(id):
     url_data, checks = repo.get_details(id)
     return render_template('url.html', url=url_data, checks=checks)
@@ -56,7 +56,7 @@ def show_urls():
     return render_template('urls.html', urls=urls_data)
 
 
-@app.post('/urls/<id>/checks')
+@app.post('/urls/<int:id>/checks')
 def check_url(id):
     url_data = repo.get_details(id)
     if random.randint(1, 10) % 2 == 0:
