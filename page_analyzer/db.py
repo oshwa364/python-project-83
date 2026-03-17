@@ -57,8 +57,8 @@ class SiteRepository:
                 cur.execute('''
                     SELECT * FROM url_checks
                     WHERE url_id = %s 
-                    ORDER BY created_at DESC,
-                    '''
+                    ORDER BY created_at DESC
+                    ''',
                     (url_id,)
                 )
                 check_data = cur.fetchall()
@@ -68,11 +68,11 @@ class SiteRepository:
         with psycopg2.connect(DATABASE_URL) as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute('''
-                SELECT u.id, u.name, MAX(c.created_at) AS last_checked  
-                FROM urls u
-                LEFT JOIN url_checks c ON u.id = c.url_id
-                GROUP BY u.id
-                ORDER BY u.created_at DESC
+                    SELECT u.id, u.name, MAX(c.created_at) AS last_checked  
+                    FROM urls u
+                    LEFT JOIN url_checks c ON u.id = c.url_id
+                    GROUP BY u.id
+                    ORDER BY u.created_at DESC
                 ''')
                 return cur.fetchall()
     
@@ -83,7 +83,7 @@ class SiteRepository:
                     INSERT INTO url_checks 
                     (url_id, status_code, h1, title, description, created_at)
                     VALUES (%s, %s, %s, %s, %s, %s)
-                    '''
+                    ''',
                     (url_id, 0, 'st', 'h1', 'description', datetime.now())
                 )
 

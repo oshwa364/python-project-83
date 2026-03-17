@@ -70,4 +70,5 @@ def check_url(id):
 @app.route('/clean-the-table')
 def clean_table():
     repo.clean_table()
+    flash('Таблицы успешно очищены', 'alert-success')
     return redirect(url_for('index'))
