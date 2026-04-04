@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 from .db import SiteRepository
-from .supplies import normalize_url
+from .supplies import fetch_and_parse_url, normalize_url
 
 load_dotenv() 
 app = Flask(__name__)
@@ -58,12 +58,17 @@ def show_urls():
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
-    url_data = repo.get_details(id)
-    if random.randint(1, 10) % 2 == 0:
-        repo.insert_url_check(id, url_data)
-        flash('Страница успешно проверена', 'alert-success')
+    url = repo.get_url_by_id(id)
+    
+    if url:
+        result = fetch_and_parse_url(url)
+        if 'error' not in result:
+            repo.insert_url_check(id, result)
+            flash('Страница успешно проверена', 'alert-success')
+        else:
+            flash(result['error'], 'alert-danger')
     else:
-        flash('Произошла ошибка при проверке', 'alert-danger')
+        flash('URL не найден', 'alert-danger')
     return redirect(url_for('url_details', id=id))
 
 
