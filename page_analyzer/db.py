@@ -75,7 +75,8 @@ class SiteRepository:
         with psycopg2.connect(DATABASE_URL) as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute('''
-                    SELECT u.id, u.name, MAX(c.created_at) AS last_checked, MAX(c.status_code) AS last_status_code
+                    SELECT u.id, u.name, MAX(c.created_at) AS last_checked,
+                            MAX(c.status_code) AS last_status_code
                     FROM urls u
                     LEFT JOIN url_checks c ON u.id = c.url_id
                     GROUP BY u.id
@@ -91,7 +92,8 @@ class SiteRepository:
                     (url_id, status_code, h1, title, description, created_at)
                     VALUES (%s, %s, %s, %s, %s, %s)
                     ''',
-                    (url_id, data['status_code'], 'h1', 'title', 'description', datetime.now())
+                    (url_id, data['status_code'], data['h1'],
+                    data['title'], data['description'], datetime.now())
                 )
 
     def clean_table(self):

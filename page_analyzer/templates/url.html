@@ -46,9 +46,9 @@
                     <tr>
                         <td>{{ check.id }}</td>
                         <td>{{ check.status_code }}</td>
-                        <td>{{ check.h1 }}</td>
-                        <td>{{ check.title }}</td>
-                        <td>{{ check.description }}</td>
+                        <td>{{ check.h1 | default('', true) | truncate(200) }}</td>
+                        <td>{{ check.title | default('', true) | truncate(200) }}</td>
+                        <td>{{ check.description | default('', true) | truncate(200) }}</td>
                         <td>{{ check.created_at.strftime('%Y-%m-%d') }}</td>
                     </tr>
                     {% endfor %}
