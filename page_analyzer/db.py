@@ -11,28 +11,7 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 
 class SiteRepository:
     def __init__(self):
-        with psycopg2.connect(DATABASE_URL) as conn:
-            with conn.cursor() as cur:
-                cur.execute('DROP TABLE IF EXISTS urls CASCADE;')
-                cur.execute('DROP TYPE IF EXISTS urls CASCADE;')
-                cur.execute('''
-                    CREATE TABLE IF NOT EXISTS urls (
-                    id SERIAL PRIMARY KEY,
-                    name VARCHAR(255) NOT NULL,
-                    created_at TIMESTAMP NOT NULL
-                    );
-                ''')
-                cur.execute('''
-                    CREATE TABLE IF NOT EXISTS url_checks (
-                    id SERIAL PRIMARY KEY,
-                    url_id INTEGER REFERENCES urls(id),
-                    status_code INTEGER,
-                    h1 VARCHAR(255),
-                    title VARCHAR(255),
-                    description VARCHAR(255),
-                    created_at TIMESTAMP
-                    );
-                ''')
+        pass
 
     def check_existing(self, url):
         with psycopg2.connect(DATABASE_URL) as conn:
