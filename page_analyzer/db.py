@@ -13,6 +13,8 @@ class SiteRepository:
     def __init__(self):
         with psycopg2.connect(DATABASE_URL) as conn:
             with conn.cursor() as cur:
+                cur.execute('DROP TABLE IF EXISTS urls;')
+                cur.execute('DROP TABLE IF EXISTS url_checks;')
                 cur.execute('''
                     CREATE TABLE IF NOT EXISTS urls (
                     id SERIAL PRIMARY KEY,
