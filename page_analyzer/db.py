@@ -14,7 +14,7 @@ class SiteRepository:
         with psycopg2.connect(DATABASE_URL) as conn:
             with conn.cursor() as cur:
                 cur.execute('DROP TABLE IF EXISTS urls CASCADE;')
-                cur.execute('DROP TABLE IF EXISTS url_checks CASCADE;')
+                cur.execute('DROP TYPE IF EXISTS urls CASCADE;')
                 cur.execute('''
                     CREATE TABLE IF NOT EXISTS urls (
                     id SERIAL PRIMARY KEY,
