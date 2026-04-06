@@ -24,7 +24,7 @@ def add_url():
     raw_url = request.form['url']
     if not validators.url(raw_url):
         flash('Некорректный URL', 'alert-danger')
-        return redirect(url_for('index'))
+        return redirect(url_for('index')), 422
 
     normalized_url = normalize_url(raw_url)
 
